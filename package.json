@@ -17,8 +17,6 @@
     "@types/node": "^18.17.3",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "i": "^0.3.7",
-    "npm": "^9.8.1",
     "nuxt": "^3.6.5",
     "vite-svg-loader": "^4.0.0"
   },
