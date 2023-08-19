@@ -61,7 +61,6 @@ export default () => {
         navigateTo('/');
       })
       .catch((error) => {
-        console.log(error);
         switch (error.code) {
           case 'auth/invalid-email':
             errMsg.value = 'Invalid email';
@@ -85,9 +84,7 @@ export default () => {
       .then(() => {
         navigateTo('/');
       })
-      .catch((error) => {
-        console.error(error.message);
-      });
+      .catch();
   };
 
   const redirectForGuest = () => {
