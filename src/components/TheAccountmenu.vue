@@ -1,18 +1,24 @@
 <template>
   <Transition name="slide-fade">
-    <div v-if="accountMenuState" ref="accountMenu" class="the-accountmenu">
-      <Icon name="mi:log-out" class="the-accountmenu__icon" />
+    <div
+      v-if="accountMenuState"
+      ref="accountMenu"
+      class="accountmenu"
+      @click="handleSignout"
+    >
+      <Icon name="mi:log-out" class="accountmenu__icon" />
     </div>
   </Transition>
 </template>
 
 <script setup lang="ts">
 const { useAccountMenu } = useMenuStates();
+const { handleSignout } = useFirebaseAuth();
 const accountMenuState = useAccountMenu();
 </script>
 
 <style scoped lang="scss">
-.the-accountmenu {
+.accountmenu {
   position: fixed;
   right: 0;
   top: 75px;
@@ -22,12 +28,12 @@ const accountMenuState = useAccountMenu();
   justify-content: center;
   align-items: center;
   background-color: $nxtdes-blue;
-  border: solid 3px $ghost-white;
+  border: solid 3px $zinc-extra-light;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 
   &__icon {
-    color: $ghost-white;
+    color: $zinc-extra-light;
     font-size: 20px;
   }
 }

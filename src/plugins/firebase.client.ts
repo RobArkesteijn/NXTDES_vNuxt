@@ -1,22 +1,33 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 
 export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
+
   const firebaseConfig = {
-    apiKey: 'AIzaSyCCZJkv-2SlOrpefwE42iVsnWu2XZeYW5Q',
-    authDomain: 'nxtdes-a13c5.firebaseapp.com',
-    databaseURL:
-      'https://nxtdes-a13c5-default-rtdb.europe-west1.firebasedatabase.app/',
-    projectId: 'nxtdes-a13c5',
-    storageBucket: 'nxtdes-a13c5.appspot.com',
-    messagingSenderId: '1096872603179',
-    appId: '1:1096872603179:web:b36d01a8131a8f2728c46e',
-    measurementId: 'G-K70F3YMNRE',
+    apiKey: config.public.apiKey,
+    authDomain: config.public.authDomain,
+    databaseURL: config.public.databaseURL,
+    projectId: config.public.projectId,
+    storageBucket: config.public.storageBucket,
+    messagingSenderId: config.public.messagingSenderId,
+    appId: config.public.appId,
+    measurementId: config.public.measurementId,
   };
 
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getDatabase(firebaseApp);
+  const auth = getAuth(firebaseApp);
+  const storage = getStorage(firebaseApp);
 
-  nuxtApp.vueApp.provide('database', db);
-  nuxtApp.provide('database', db);
+  nuxtApp.vueApp.provide('db', db);
+  nuxtApp.provide('db', db);
+
+  nuxtApp.vueApp.provide('auth', auth);
+  nuxtApp.provide('auth', auth);
+
+  nuxtApp.vueApp.provide('storage', storage);
+  nuxtApp.provide('storage', storage);
 });

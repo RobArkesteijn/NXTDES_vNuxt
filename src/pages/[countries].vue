@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <TheBanner />
+  </div>
 </template>
 
 <script setup lang="ts"></script>

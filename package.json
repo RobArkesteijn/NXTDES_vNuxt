@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@types/node": "^18.17.3",
+    "@types/node": "^20.5.1",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "nuxt": "^3.6.5",
@@ -27,7 +27,7 @@
     "eslint-config-prettier": "^9.0.0",
     "firebase": "^10.2.0",
     "prettier": "^3.0.1",
-    "sass": "^1.65.1",
+    "sass": "^1.66.1",
     "typescript": "^5.1.6"
   }
 }

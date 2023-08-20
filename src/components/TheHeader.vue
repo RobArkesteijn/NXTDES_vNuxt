@@ -1,14 +1,21 @@
 <template>
-  <div class="the-header">
+  <div class="header">
     <Icon
       name="humbleicons:bars"
-      class="the-header__menu-icon"
+      class="header__menu-icon"
       @click="sideMenuState = !sideMenuState"
     />
-    <NuxtLink to="/" class="the-header__logo">NXTDES</NuxtLink>
+    <NuxtLink to="/" class="header__logo">NXTDES</NuxtLink>
+    <img
+      v-if="user?.photoURL"
+      :src="user.photoURL"
+      class="header__user-image"
+      @click="accountMenuState = !accountMenuState"
+    />
     <Icon
+      v-else
       name="material-symbols:account-circle"
-      class="the-header__user"
+      class="header__user"
       @click="accountMenuState = !accountMenuState"
     />
   </div>
@@ -16,12 +23,13 @@
 
 <script setup lang="ts">
 const { useSideMenu, useAccountMenu } = useMenuStates();
+const { user } = useFirebaseAuth();
 const sideMenuState = useSideMenu();
 const accountMenuState = useAccountMenu();
 </script>
 
 <style scoped lang="scss">
-.the-header {
+.header {
   background-color: $nxtdes-blue;
   width: 100%;
   height: 75px;
@@ -30,6 +38,7 @@ const accountMenuState = useAccountMenu();
   position: fixed;
   justify-content: center;
   z-index: 5;
+  border-bottom: solid 2px $zinc-extra-light;
 
   @include tablet {
     justify-content: flex-start;
@@ -39,7 +48,7 @@ const accountMenuState = useAccountMenu();
     font-size: 2rem;
     font-weight: bold;
     padding-inline: 20px;
-    color: $ghost-white;
+    color: $zinc-extra-light;
     position: absolute;
     left: 0;
 
@@ -49,7 +58,7 @@ const accountMenuState = useAccountMenu();
   }
 
   &__logo {
-    color: $ghost-white;
+    color: $zinc-extra-light;
     font-size: 36px;
     text-shadow: 2px 2px 0.2px $nxtdes-blue-dark;
     font-family: 'Fredericka the Great', cursive;
@@ -62,7 +71,17 @@ const accountMenuState = useAccountMenu();
     right: 0;
     padding-inline: 20px;
     font-size: 2rem;
-    color: $ghost-white;
+    color: $zinc-extra-light;
+  }
+
+  &__user-image {
+    position: absolute;
+    right: 0;
+    margin-inline: 20px;
+    width: 32px;
+    height: 32px;
+    border: solid 2px $zinc-extra-light;
+    border-radius: 50%;
   }
 }
 </style>

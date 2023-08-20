@@ -15,10 +15,15 @@ export default () => {
     return useState<string>('errMsg', () => '');
   };
 
+  const useSignInState = () => {
+    return useState<string>('signIn', () => 'Register');
+  };
+
   return {
     useNameState,
     useEmailState,
     usePasswordState,
     useErrMsgState,
+    useSignInState,
   };
 };

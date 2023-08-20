@@ -1,28 +1,30 @@
 import {
   createUserWithEmailAndPassword,
   User,
-  getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   updateProfile,
   signInWithEmailAndPassword,
+  signOut,
+  UserCredential,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
-const { useErrMsgState, useNameState, useEmailState, usePasswordState } =
-  useLoginStates();
-const errMsg = useErrMsgState();
-const email = useEmailState();
-const password = usePasswordState();
-const name = useNameState();
-
-const auth = getAuth();
-
 export default () => {
+  const { useErrMsgState, useNameState, useEmailState, usePasswordState } =
+    useLoginStates();
+  const errMsg = useErrMsgState();
+  const email = useEmailState();
+  const password = usePasswordState();
+  const name = useNameState();
   const user = useState<User | null>('user', () => null);
+
+  const { $auth } = useNuxtApp();
+  const route = useRoute();
 
   function registerUser(event: MouseEvent) {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email.value, password.value)
+    createUserWithEmailAndPassword($auth, email.value, password.value)
       .then((userCredential) => {
         user.value = userCredential.user;
         return updateProfile(user.value, { displayName: name.value });
@@ -56,7 +58,7 @@ export default () => {
 
   function loginUser(event: MouseEvent) {
     event.preventDefault();
-    signInWithEmailAndPassword(auth, email.value, password.value)
+    signInWithEmailAndPassword($auth, email.value, password.value)
       .then(() => {
         navigateTo('/');
       })
@@ -80,9 +82,10 @@ export default () => {
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(() => {
+    signInWithPopup($auth, provider)
+      .then((userCredential: UserCredential) => {
         navigateTo('/');
+        user.value = userCredential.user;
       })
       .catch();
   };
@@ -91,11 +94,37 @@ export default () => {
     navigateTo('/');
   };
 
+  const handleSignout = () => {
+    signOut($auth)
+      .then(() => {
+        navigateTo('/login');
+        // ClearNuxtState(); is not yet working
+        user.value = null;
+        clearNuxtState();
+      })
+      .catch();
+  };
+
+  const checkUserStatus = () => {
+    onAuthStateChanged($auth, (userCredential: User) => {
+      if (userCredential) {
+        user.value = userCredential;
+        if (route.path === '/login') {
+          navigateTo('/');
+        }
+      } else {
+        user.value = null;
+      }
+    });
+  };
+
   return {
     user,
     registerUser,
     loginUser,
     signInWithGoogle,
     redirectForGuest,
+    handleSignout,
+    checkUserStatus,
   };
 };

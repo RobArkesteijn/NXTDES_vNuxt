@@ -2,6 +2,18 @@ import svgLoader from 'vite-svg-loader';
 export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
+  runtimeConfig: {
+    public: {
+      authDomain: '',
+      projectId: '',
+      apiKey: '',
+      databaseURL: '',
+      storageBucket: '',
+      messagingSenderId: '',
+      appId: '',
+      measurementId: '',
+    },
+  },
   app: {
     head: {
       title: 'NXTDES | Next Destination',

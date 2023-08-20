@@ -2,7 +2,7 @@
   <Transition name="fade">
     <div
       v-if="sideMenuState"
-      class="the-foreground"
+      class="foreground"
       @click="sideMenuState = false"
     ></div>
   </Transition>
@@ -14,7 +14,7 @@ const sideMenuState = useSideMenu();
 </script>
 
 <style scoped lang="scss">
-.the-foreground {
+.foreground {
   height: 100vh;
   width: 100%;
   position: fixed;
