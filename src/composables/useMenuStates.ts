@@ -1,5 +1,5 @@
 export default () => {
-  const useSideMenu = () => {
+  const useOpenSideMenu = () => {
     return useState<boolean>('sideMenuState', () => false);
   };
 
@@ -7,5 +7,5 @@ export default () => {
     return useState<boolean>('accountMenuState', () => false);
   };
 
-  return { useSideMenu, useAccountMenu };
+  return { useOpenSideMenu, useAccountMenu };
 };

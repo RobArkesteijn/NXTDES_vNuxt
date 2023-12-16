@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-const { useSideMenu } = useMenuStates();
-const sideMenuState = useSideMenu();
+const { useOpenSideMenu } = useMenuStates();
+const sideMenuState = useOpenSideMenu();
 </script>
 
 <style scoped lang="scss">

@@ -31,6 +31,7 @@ const accountMenuState = useAccountMenu();
   border: solid 3px $zinc-extra-light;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  z-index: 4;
 
   &__icon {
     color: $zinc-extra-light;

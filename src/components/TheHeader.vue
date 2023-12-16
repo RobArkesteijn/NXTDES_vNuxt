@@ -5,7 +5,7 @@
       class="header__menu-icon"
       @click="sideMenuState = !sideMenuState"
     />
-    <NuxtLink to="/" class="header__logo">NXTDES</NuxtLink>
+    <NuxtLink :to="localePath('/')" class="header__logo">NXTDES</NuxtLink>
     <img
       v-if="user?.photoURL"
       :src="user.photoURL"
@@ -22,9 +22,10 @@
 </template>
 
 <script setup lang="ts">
-const { useSideMenu, useAccountMenu } = useMenuStates();
+const localePath = useLocalePath();
+const { useOpenSideMenu, useAccountMenu } = useMenuStates();
 const { user } = useFirebaseAuth();
-const sideMenuState = useSideMenu();
+const sideMenuState = useOpenSideMenu();
 const accountMenuState = useAccountMenu();
 </script>
 

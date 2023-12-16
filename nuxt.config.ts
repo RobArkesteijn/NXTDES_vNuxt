@@ -20,7 +20,6 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
       viewport: 'width=device-width, initial-scale=1',
     },
-    pageTransition: { name: 'page', mode: 'out-in' },
   },
   css: ['@/assets/scss/main.scss'],
   vite: {
@@ -33,5 +32,25 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ['nuxt-icon'],
+  modules: ['@nuxtjs/strapi', 'nuxt-icon', '@nuxt/image', '@nuxtjs/i18n'],
+  image: {
+    format: ['webp'],
+    strapi: {
+      baseURL: 'http://localhost:1337/',
+    },
+  },
+  i18n: {
+    vueI18n: './i18n.config.ts',
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+      },
+      {
+        code: 'nl',
+        iso: 'nl-NL',
+      },
+    ],
+    defaultLocale: 'en',
+  },
 });

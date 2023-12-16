@@ -2,16 +2,50 @@
   <Transition name="slide">
     <div v-if="sideMenuState" class="sidemenu">
       <h2 v-if="user?.displayName" class="sidemenu__welcome">
-        Welcome {{ firstName }}
+        {{ $t('welcome') }} {{ firstName }}
       </h2>
+      <h2 v-else class="sidemenu__welcome">
+        {{ $t('welcome') }} {{ $t('guest') }}
+      </h2>
+      <SwitchLanguage />
+      <SideMenuOption
+        :title="$t('travelinfo')"
+        :options="travelInfo"
+        icon-name="tabler:info-circle-filled"
+      />
+      <SideMenuOption
+        :title="$t('countries')"
+        :options="countries"
+        icon-name="ion:earth"
+      />
+      <SideMenuOption
+        :title="$t('upcomingDestionations')"
+        :options="upcomingDestinations"
+        icon-name="ph:airplane-takeoff-fill"
+      />
     </div>
   </Transition>
 </template>
 
 <script setup lang="ts">
-const { useSideMenu } = useMenuStates();
+const { useOpenSideMenu } = useMenuStates();
 const { user } = useFirebaseAuth();
-const sideMenuState = useSideMenu();
+const sideMenuState = useOpenSideMenu();
+
+defineProps({
+  travelInfo: {
+    type: Array<String>,
+    required: true,
+  },
+  countries: {
+    type: Array<String>,
+    required: true,
+  },
+  upcomingDestinations: {
+    type: Array<String>,
+    required: true,
+  },
+});
 
 const firstName = computed(() => {
   return user.value?.displayName?.split(' ')[0];
@@ -26,10 +60,11 @@ const firstName = computed(() => {
   position: fixed;
   top: 0;
   z-index: 99;
+  overflow: scroll;
 
   &__welcome {
     color: $zinc-extra-light;
-    height: 10%;
+    min-height: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
