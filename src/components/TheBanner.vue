@@ -1,42 +1,65 @@
 <template>
-  <Transition name="fade-banner">
-    <div class="banner">
-      <img v-if="bannerImage" :src="bannerImage" class="banner__image" />
-      <Transition name="fade-text">
-        <span class="banner__title">
-          <h2 class="banner__country-name">{{ countryName }}</h2>
-        </span>
-      </Transition>
-      <Transition name="fade-text">
-        <span class="banner__intro">
-          <h2 class="banner__country-intro">{{ bannerIntro }}</h2>
-        </span>
-      </Transition>
-    </div>
-  </Transition>
+  <div class="banner">
+    <NuxtImg
+      v-if="bannerImage"
+      ref="bannerImageRef"
+      provider="strapi"
+      :src="bannerImage.url"
+      class="banner__image"
+      @click="scrollToElement('page-text-content')"
+    />
+    <span class="banner__breadcrumb">
+      <TheBreadCrumb />
+    </span>
+    <span
+      ref="introText"
+      class="banner__intro"
+      @click="scrollToElement('page-text-content')"
+    >
+      <h2 class="banner__country-intro">
+        {{ bannerIntro || $t('introText') }}
+      </h2>
+      <Icon name="gg:corner-right-down" class="banner__redirect" />
+    </span>
+  </div>
 </template>
 
 <script setup lang="ts">
 const { $router } = useNuxtApp();
-const { fetchBannerImage, fetchBannerTitle, bannerImage, bannerIntro } =
-  useBanner();
-const params = $router.currentRoute.value.params;
-const paramKeys = Object.keys(params);
-const lastParamKey = paramKeys[paramKeys.length - 1];
-const lastParamValue = params[lastParamKey];
+const { fadeInTextFromBottom, fadeInImage } = useAnimations();
 
-const countryName = computed(() => {
-  return lastParamValue.charAt(0).toUpperCase() + lastParamValue.slice(1);
+defineProps({
+  bannerImage: {
+    type: Object,
+    required: true,
+  },
+  bannerIntro: {
+    type: String,
+    required: true,
+  },
 });
 
-const destinationType = computed(() => {
-  return paramKeys.length > 1 ? 'city' : 'country';
-});
+const introText = ref<HTMLElement>();
+const bannerImageRef = ref<HTMLElement>();
 
-onBeforeMount(() => {
-  fetchBannerImage(lastParamValue);
-  fetchBannerTitle(lastParamValue, destinationType.value);
-});
+watch(
+  () => $router.currentRoute.value,
+  () => {
+    if (introText.value) {
+      fadeInTextFromBottom(introText.value);
+    }
+    if (bannerImageRef.value) {
+      fadeInImage(bannerImageRef.value);
+    }
+  },
+);
+
+function scrollToElement(id: string) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -45,6 +68,7 @@ onBeforeMount(() => {
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   &__image {
     position: absolute;
@@ -54,41 +78,31 @@ onBeforeMount(() => {
     z-index: -1;
   }
 
-  &__title {
+  &__breadcrumb {
     margin-top: 75px;
-    padding: 20px;
     color: $white;
-  }
-
-  &__country-name {
-    font-weight: bold;
-    font-size: 36px;
-    text-shadow: 2px 2px 0px $nxtdes-blue-dark;
   }
 
   &__intro {
     margin-top: auto;
     color: $white;
-    min-height: 20%;
     padding: 20px;
     display: flex;
     align-items: flex-end;
+    background-color: rgba($nxtdes-blue-extra-dark, 0.9);
+    border-top: solid 2px $zinc-light;
   }
 
   &__country-intro {
-    text-shadow: 2px 2px 0px $nxtdes-blue-dark;
+    text-shadow: 2px 2px 0px $nxtdes-blue;
     font-size: 48px;
     font-weight: bold;
+    max-width: 90%;
   }
-}
 
-.fade-banner-enter-active,
-.fade-banner-leave-active {
-  transition: opacity 1s ease;
-}
-
-.fade-banner-enter-from,
-.fade-banner-leave-to {
-  opacity: 0;
+  &__redirect {
+    height: 4em;
+    width: auto;
+  }
 }
 </style>

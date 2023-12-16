@@ -1,14 +1,14 @@
 import {
   createUserWithEmailAndPassword,
-  User,
   GoogleAuthProvider,
   signInWithPopup,
   updateProfile,
   signInWithEmailAndPassword,
   signOut,
-  UserCredential,
   onAuthStateChanged,
 } from 'firebase/auth';
+
+import type { User, UserCredential } from 'firebase/auth';
 
 export default () => {
   const { useErrMsgState, useNameState, useEmailState, usePasswordState } =

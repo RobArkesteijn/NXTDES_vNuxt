@@ -101,7 +101,7 @@ const signInType = computed(() => {
 });
 
 const changeSignInState = () => {
-  // Refactor to clearNuxtState()
+  // TODO: Refactor to clearNuxtState()
   errMsg.value = '';
   name.value = '';
   email.value = '';
